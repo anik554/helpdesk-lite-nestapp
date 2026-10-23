@@ -20,16 +20,8 @@ export class UsersService {
     if (existingUser) {
       throw new BadRequestException('User with this email already exists');
     }
-
-    const hashedPassword = await bcrypt.hash(
-      createUserDto.password,
-      process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10,
-    );
-
-    const user = this.repo.create({
-      ...createUserDto,
-      password: hashedPassword,
-    });
+    
+    const user = this.repo.create(createUserDto);
 
     return this.repo.save(user);
   }
